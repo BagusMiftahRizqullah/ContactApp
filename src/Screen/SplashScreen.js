@@ -6,6 +6,7 @@ import IconApp from '../Assets/images/IconApp.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {HOME_ACTION} from './Home/Home.Action';
 import AnimatedLoader from 'react-native-animated-loader';
+import LottieView from 'lottie-react-native';
 
 const SplashScreen = props => {
   const dispatch = useDispatch();
@@ -13,13 +14,13 @@ const SplashScreen = props => {
 
   useEffect(() => {
     fetchContact();
-    // setTimeout(() => {
-    //   props.navigation.navigate('HomeScreen');
-    //   if (homeReducer.DataWeather) {
-    //   } else {
-    //     fetchContact();
-    //   }
-    // }, 800);
+    setTimeout(() => {
+      props.navigation.navigate('HomeScreen');
+      if (homeReducer.DataWeather) {
+      } else {
+        fetchContact();
+      }
+    }, 3000);
   }, []);
 
   const fetchContact = () => {
@@ -29,15 +30,19 @@ const SplashScreen = props => {
   };
 
   return (
-    <AnimatedLoader
-      visible={true}
-      overlayColor="rgba(255,255,255,0.75)"
-      source={require('../Assets/images/AnimationSplash.json')}
-      animationStyle={styles.lottie}
-      speed={1}
-      loop={true}>
-      <Text>Contact Apps</Text>
-    </AnimatedLoader>
+    <View style={styles.container}>
+      <LottieView
+        source={require('../Assets/images/Cats.json')}
+        autoPlay
+        loop
+        speed={1}
+        style={{
+          width: 500,
+          height: 500,
+        }}
+      />
+      <Text style={styles.text}>Contact Apps</Text>
+    </View>
   );
 };
 
@@ -46,20 +51,17 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     flexDirection: 'column',
   },
-  containerIcon: {paddingTop: heightPercentageToDP(24)},
-  icon: {
-    alignSelf: 'center',
-    width: 120,
-    height: 120,
-  },
-  text: {color: '#000000'},
-  lottie: {
-    width: 100,
-    height: 100,
+
+  text: {
+    color: '#000000',
+    fontWeight: 'bold',
+    fontSize: 20,
+    position: 'absolute',
+    top: heightPercentageToDP('70%'),
   },
 });
