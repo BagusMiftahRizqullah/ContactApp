@@ -29,6 +29,7 @@ const Home = props => {
   const [isVisibleDell, setIsVisibleDell] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [dataSearch, setDataSearch] = useState([]);
+  const [idDell, setIdDell] = useState(null);
   const homeReducer = useSelector(state => state.homeReducer);
   const isLoading = useSelector(state => state.GlobalReducer.Loading);
   const myName = 'Bagus Miftah Rizqullah';
@@ -105,19 +106,21 @@ const Home = props => {
     }
   };
 
-  const dellData = id => {
-    setIsVisibleDell(true);
+  const dellData = async id => {
+    await setIdDell(id);
+    await setIsVisibleDell(!isVisibleDell);
     console.log('id', id);
   };
 
-  console.log('DataSEARCHSS', dataSearch);
+  console.log('DataSEARCHSS123', homeReducer.DataContact);
   return (
     <View style={styles.contaner}>
       <ModalDellContact
         isVisibleDell={isVisibleDell}
         setIsVisibleDell={setIsVisibleDell}
+        id={idDell}
       />
-      {/* <ModalAddContact isVisible={isVisible} setIsVisible={setIsVisible} /> */}
+      <ModalAddContact isVisible={isVisible} setIsVisible={setIsVisible} />
       {/* Header */}
       <View style={styles.containerHeader}>
         <View style={styles.containerIconSearch}>
@@ -296,12 +299,7 @@ const Home = props => {
                                         <Text>{`${v.firstName} ${v.lastName}`}</Text>
                                       </TouchableOpacity>
                                       <TouchableOpacity
-                                        onPress={() => {
-                                          dispatch({
-                                            type: HOME_ACTION.DELL_DATA,
-                                            payload: v.id,
-                                          });
-                                        }}>
+                                        onPress={() => dellData(v.id)}>
                                         <Text
                                           style={{
                                             color: '#4169E1',

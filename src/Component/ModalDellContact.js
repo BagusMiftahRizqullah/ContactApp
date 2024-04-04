@@ -8,57 +8,79 @@ import {
 } from 'react-native';
 import React from 'react';
 import Modal from 'react-native-modal';
-import IconGoback from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 
-const ModalDellContact = ({isVisibleDell, setIsVisibleDell}) => {
+const ModalDellContact = ({isVisibleDell, setIsVisibleDell, id}) => {
+  const dispatch = useDispatch();
   return (
     <Modal isVisible={isVisibleDell}>
       <View
         style={{
-          flex: 1,
           backgroundColor: '#ffffff',
           borderRadius: 8,
+          height: heightPercentageToDP(35),
+          justifyContent: 'space-around',
         }}>
-        <Text>Apkah anda yakin ingin menghapus data ini ?</Text>
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: '#06A3DB',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 18,
-            borderRadius: 10,
+            padding: 24,
           }}>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontWeight: 'bold',
-              fontSize: 18,
-            }}>
-            Delete
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>
+            Apkah anda yakin ingin menghapus data ini ?
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setIsVisibleDell(false)}
-          style={{
-            backgroundColor: '#06A3DB',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 18,
-            borderRadius: 10,
-          }}>
-          <Text
+        </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch({
+                type: 'DELL_DATA',
+                payload: id,
+              });
+              setIsVisibleDell(false);
+            }}
             style={{
-              color: '#ffffff',
-              fontWeight: 'bold',
-              fontSize: 18,
+              backgroundColor: '#E11428',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 18,
+              marginHorizontal: 8,
+              borderRadius: 10,
             }}>
-            Cancel
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                color: '#ffffff',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setIsVisibleDell(false)}
+            style={{
+              backgroundColor: '#06A3DB',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 18,
+              borderRadius: 10,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            }}>
+            <Text
+              style={{
+                color: '#ffffff',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );

@@ -5,6 +5,7 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import IconApp from '../Assets/images/IconApp.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {HOME_ACTION} from './Home/Home.Action';
+import AnimatedLoader from 'react-native-animated-loader';
 
 const SplashScreen = props => {
   const dispatch = useDispatch();
@@ -12,13 +13,13 @@ const SplashScreen = props => {
 
   useEffect(() => {
     fetchContact();
-    setTimeout(() => {
-      props.navigation.navigate('HomeScreen');
-      if (homeReducer.DataWeather) {
-      } else {
-        fetchContact();
-      }
-    }, 800);
+    // setTimeout(() => {
+    //   props.navigation.navigate('HomeScreen');
+    //   if (homeReducer.DataWeather) {
+    //   } else {
+    //     fetchContact();
+    //   }
+    // }, 800);
   }, []);
 
   const fetchContact = () => {
@@ -28,18 +29,15 @@ const SplashScreen = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerIcon}>
-        <FastImage
-          style={styles.icon}
-          source={IconApp}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-      </View>
-      <View style={{paddingTop: heightPercentageToDP(24)}}>
-        <Text style={{color: '#06A3DB'}}>Contact Apps</Text>
-      </View>
-    </View>
+    <AnimatedLoader
+      visible={true}
+      overlayColor="rgba(255,255,255,0.75)"
+      source={require('../Assets/images/AnimationSplash.json')}
+      animationStyle={styles.lottie}
+      speed={1}
+      loop={true}>
+      <Text>Contact Apps</Text>
+    </AnimatedLoader>
   );
 };
 
@@ -60,4 +58,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
   text: {color: '#000000'},
+  lottie: {
+    width: 100,
+    height: 100,
+  },
 });

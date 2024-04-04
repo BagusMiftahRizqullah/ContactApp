@@ -20,10 +20,17 @@ export const apiGetByIdDataHome = data => {
   return axios.request(options);
 };
 export const apiPostDataHome = data => {
+  console.log('DATA POST', data);
+  const datas = {
+    firstName: data.payload.firstName,
+    lastName: data.payload.lastName,
+    age: data.payload.age,
+    photo: data.payload.photo,
+  };
   const options = {
-    method: 'DELETE',
+    method: 'POST',
     url: `${baseApiURL}/contact`,
-    data: data.payload,
+    data: datas,
   };
 
   return axios.request(options);
@@ -39,10 +46,11 @@ export const apiUpdateDataHome = data => {
   return axios.request(options);
 };
 
-export const apiDellDataHome = data => {
+export const apiDellDataHome = id => {
+  console.log('URL DELL', `${baseApiURL}/contact/${id}`);
   const options = {
     method: 'DELETE',
-    url: `${baseApiURL}/contact/${data.payload.id}`,
+    url: `${baseApiURL}/contact/${id}`,
   };
 
   return axios.request(options);
