@@ -35,7 +35,6 @@ const Home = props => {
   const [idDell, setIdDell] = useState(null);
   const homeReducer = useSelector(state => state.homeReducer);
   const isLoading = useSelector(state => state.GlobalReducer.Loading);
-  const myName = 'Bagus Miftah Rizqullah';
 
   const FunMatchAll = a => {
     let rgxName = new RegExp(/(\p{L}{1})\p{L}+/gu);
@@ -124,7 +123,6 @@ const Home = props => {
     console.log('id', id);
   };
 
-  console.log('DataSEARCHSS123', homeReducer.DataContact);
   return (
     <View style={styles.contaner}>
       <FilterContact
@@ -227,11 +225,17 @@ const Home = props => {
                                             justifyContent: 'space-between',
                                           }}>
                                           <TouchableOpacity
-                                            onPress={() =>
+                                            onPress={() => {
+                                              dispatch({
+                                                type: HOME_ACTION.GET_DATA_BYID,
+                                                payload: {
+                                                  id: v.id,
+                                                },
+                                              });
                                               props.navigation.navigate(
                                                 'DetailHome',
-                                              )
-                                            }
+                                              );
+                                            }}
                                             style={{
                                               alignItems: 'center',
                                               flexDirection: 'row',
@@ -286,11 +290,17 @@ const Home = props => {
                                             justifyContent: 'space-between',
                                           }}>
                                           <TouchableOpacity
-                                            onPress={() =>
+                                            onPress={() => {
+                                              dispatch({
+                                                type: HOME_ACTION.GET_DATA_BYID,
+                                                payload: {
+                                                  id: v.id,
+                                                },
+                                              });
                                               props.navigation.navigate(
                                                 'DetailHome',
-                                              )
-                                            }
+                                              );
+                                            }}
                                             style={{
                                               alignItems: 'center',
                                               flexDirection: 'row',
@@ -362,11 +372,17 @@ const Home = props => {
                                             justifyContent: 'space-between',
                                           }}>
                                           <TouchableOpacity
-                                            onPress={() =>
+                                            onPress={() => {
+                                              dispatch({
+                                                type: HOME_ACTION.GET_DATA_BYID,
+                                                payload: {
+                                                  id: v.id,
+                                                },
+                                              });
                                               props.navigation.navigate(
                                                 'DetailHome',
-                                              )
-                                            }
+                                              );
+                                            }}
                                             style={{
                                               alignItems: 'center',
                                               flexDirection: 'row',
@@ -421,11 +437,17 @@ const Home = props => {
                                             justifyContent: 'space-between',
                                           }}>
                                           <TouchableOpacity
-                                            onPress={() =>
+                                            onPress={() => {
+                                              dispatch({
+                                                type: HOME_ACTION.GET_DATA_BYID,
+                                                payload: {
+                                                  id: v.id,
+                                                },
+                                              });
                                               props.navigation.navigate(
                                                 'DetailHome',
-                                              )
-                                            }
+                                              );
+                                            }}
                                             style={{
                                               alignItems: 'center',
                                               flexDirection: 'row',

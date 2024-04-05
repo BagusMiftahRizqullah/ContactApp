@@ -31,17 +31,19 @@ const SplashScreen = props => {
 
   return (
     <View style={styles.container}>
-      <LottieView
-        source={require('../Assets/images/Cats.json')}
-        autoPlay
-        loop
-        speed={1}
-        style={{
-          width: 500,
-          height: 500,
-        }}
-      />
-      <Text style={styles.text}>Contact Apps</Text>
+      <View style={{alignItems: 'center'}}>
+        <LottieView
+          source={require('../Assets/images/Cats.json')}
+          autoPlay
+          loop
+          speed={1}
+          style={{
+            width: 500,
+            height: 500,
+          }}
+        />
+        <Text style={styles.text}>Contact Apps</Text>
+      </View>
     </View>
   );
 };
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: '#000000',
+    color: '#06A3DB',
     fontWeight: 'bold',
     fontSize: 20,
     position: 'absolute',
