@@ -19,14 +19,17 @@ import {
 } from 'react-native-responsive-screen';
 import * as _ from 'lodash';
 import Loading from '../../Component/Loading';
-import {actionLoading} from '../../Store/GlobalAction';
+import LottieView from 'lottie-react-native';
 import ModalAddContact from '../../Component/ModalAddContact';
 import ModalDellContact from '../../Component/ModalDellContact';
+import FilterContact from '../../Component/FilterContact';
 
 const Home = props => {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleDell, setIsVisibleDell] = useState(false);
+  const [isVisibleFill, setIsVisibleFill] = useState(false);
+  const [dataFill, setDataFill] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [dataSearch, setDataSearch] = useState([]);
   const [idDell, setIdDell] = useState(null);
@@ -83,6 +86,15 @@ const Home = props => {
     'Z',
   ];
 
+  console.log(
+    'fillNews2',
+
+    Abjad.slice(
+      Abjad.indexOf(dataFill?.start),
+      Abjad.indexOf(dataFill?.end) + 1,
+    ),
+  );
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch({
@@ -115,6 +127,11 @@ const Home = props => {
   console.log('DataSEARCHSS123', homeReducer.DataContact);
   return (
     <View style={styles.contaner}>
+      <FilterContact
+        fillter={isVisibleFill}
+        setIsVisibleFill={setIsVisibleFill}
+        setDataFill={setDataFill}
+      />
       <ModalDellContact
         isVisibleDell={isVisibleDell}
         setIsVisibleDell={setIsVisibleDell}
@@ -137,8 +154,7 @@ const Home = props => {
           />
         </View>
         <View style={styles.containerSetting}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('SettingScreen')}>
+          <TouchableOpacity onPress={() => setIsVisibleFill(!isVisibleFill)}>
             <FastImage
               style={{width: 20, height: 20}}
               source={IconSetting}
@@ -172,151 +188,292 @@ const Home = props => {
                   flexDirection: 'column',
                   justifyContent: 'space-evenly',
                 }}>
-                <View
+                <LottieView
+                  source={require('../../Assets/images/HomeAnimate.json')}
+                  autoPlay
+                  loop
+                  speed={1}
                   style={{
-                    alignItems: 'center',
-                    backgroundColor: '#e6e6e6',
-                    borderRadius: 100,
-                    padding: 12,
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 32,
-                    }}>{`${FunMatchAll(myName)}`}</Text>
-                </View>
-                <Text>+62 89751253421265</Text>
-                <Text>{myName}</Text>
+                    width: 440,
+                    height: 400,
+                  }}
+                />
               </View>
               <View style={{flex: 1}}>
-                {Abjad.map((item, index) => {
-                  return (
-                    <View>
-                      <View
-                        key={index}
-                        style={{
-                          padding: 12,
-                        }}>
-                        <Text>{item}</Text>
-                        {dataSearch.length > 0
-                          ? dataSearch?.map((v, i) => {
-                              return (
-                                <View>
-                                  {item == FunMatchOne(v.firstName) ? (
-                                    <View
-                                      style={{
-                                        padding: 12,
-                                        flex: 1,
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                      }}>
-                                      <TouchableOpacity
-                                        onPress={() =>
-                                          props.navigation.navigate(
-                                            'DetailHome',
-                                          )
-                                        }
-                                        style={{
-                                          alignItems: 'center',
-                                          flexDirection: 'row',
-                                        }}>
+                {dataFill
+                  ? Abjad.slice(
+                      Abjad.indexOf(dataFill?.start),
+                      Abjad.indexOf(dataFill?.end) + 1,
+                    ).map((item, index) => {
+                      return (
+                        <View>
+                          <View
+                            key={index}
+                            style={{
+                              padding: 12,
+                            }}>
+                            <Text>{item}</Text>
+                            {dataSearch.length > 0
+                              ? dataSearch?.map((v, i) => {
+                                  return (
+                                    <View>
+                                      {item == FunMatchOne(v.firstName) ? (
                                         <View
                                           style={{
+                                            padding: 12,
+                                            flex: 1,
                                             alignItems: 'center',
-                                            backgroundColor: '#e6e6e6',
-                                            borderRadius: 100,
-                                            width: widthPercentageToDP('8%'),
-                                            height: heightPercentageToDP('4%'),
-                                            justifyContent: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
                                           }}>
-                                          <Text
+                                          <TouchableOpacity
+                                            onPress={() =>
+                                              props.navigation.navigate(
+                                                'DetailHome',
+                                              )
+                                            }
                                             style={{
-                                              fontSize: 12,
+                                              alignItems: 'center',
+                                              flexDirection: 'row',
                                             }}>
-                                            {`${FunMatchAll(
-                                              `${v.firstName} ${v.lastName}`,
-                                            )}`}
-                                          </Text>
+                                            <View
+                                              style={{
+                                                alignItems: 'center',
+                                                backgroundColor: '#e6e6e6',
+                                                borderRadius: 100,
+                                                width:
+                                                  widthPercentageToDP('8%'),
+                                                height:
+                                                  heightPercentageToDP('4%'),
+                                                justifyContent: 'center',
+                                              }}>
+                                              <Text
+                                                style={{
+                                                  fontSize: 12,
+                                                }}>
+                                                {`${FunMatchAll(
+                                                  `${v.firstName} ${v.lastName}`,
+                                                )}`}
+                                              </Text>
+                                            </View>
+                                            <View style={{width: 8}} />
+                                            <Text>{`${v.firstName} ${v.lastName}`}</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity
+                                            onPress={() => dellData(v.id)}>
+                                            <Text
+                                              style={{
+                                                color: '#4169E1',
+                                              }}>
+                                              Delete
+                                            </Text>
+                                          </TouchableOpacity>
                                         </View>
-                                        <View style={{width: 8}} />
-                                        <Text>{`${v.firstName} ${v.lastName}`}</Text>
-                                      </TouchableOpacity>
-                                      <TouchableOpacity
-                                        onPress={() => dellData(v.id)}>
-                                        <Text
-                                          style={{
-                                            color: '#4169E1',
-                                          }}>
-                                          Delete
-                                        </Text>
-                                      </TouchableOpacity>
+                                      ) : null}
                                     </View>
-                                  ) : null}
-                                </View>
-                              );
-                            })
-                          : homeReducer.DataContact?.map((v, i) => {
-                              return (
-                                <View>
-                                  {item == FunMatchOne(v.firstName) ? (
-                                    <View
-                                      style={{
-                                        padding: 12,
-                                        flex: 1,
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                      }}>
-                                      <TouchableOpacity
-                                        onPress={() =>
-                                          props.navigation.navigate(
-                                            'DetailHome',
-                                          )
-                                        }
-                                        style={{
-                                          alignItems: 'center',
-                                          flexDirection: 'row',
-                                        }}>
+                                  );
+                                })
+                              : homeReducer.DataContact?.map((v, i) => {
+                                  return (
+                                    <View>
+                                      {item == FunMatchOne(v.firstName) ? (
                                         <View
                                           style={{
+                                            padding: 12,
+                                            flex: 1,
                                             alignItems: 'center',
-                                            backgroundColor: '#e6e6e6',
-                                            borderRadius: 100,
-                                            width: widthPercentageToDP('8%'),
-                                            height: heightPercentageToDP('4%'),
-                                            justifyContent: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
                                           }}>
-                                          <Text
+                                          <TouchableOpacity
+                                            onPress={() =>
+                                              props.navigation.navigate(
+                                                'DetailHome',
+                                              )
+                                            }
                                             style={{
-                                              fontSize: 12,
+                                              alignItems: 'center',
+                                              flexDirection: 'row',
                                             }}>
-                                            {`${FunMatchAll(
-                                              `${v.firstName} ${v.lastName}`,
-                                            )}`}
-                                          </Text>
+                                            <View
+                                              style={{
+                                                alignItems: 'center',
+                                                backgroundColor: '#e6e6e6',
+                                                borderRadius: 100,
+                                                width:
+                                                  widthPercentageToDP('8%'),
+                                                height:
+                                                  heightPercentageToDP('4%'),
+                                                justifyContent: 'center',
+                                              }}>
+                                              <Text
+                                                style={{
+                                                  fontSize: 12,
+                                                }}>
+                                                {`${FunMatchAll(
+                                                  `${v.firstName} ${v.lastName}`,
+                                                )}`}
+                                              </Text>
+                                            </View>
+                                            <View style={{width: 8}} />
+                                            <Text>{`${v.firstName} ${v.lastName}`}</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity
+                                            onPress={() => dellData(v.id)}>
+                                            <Text
+                                              style={{
+                                                color: '#4169E1',
+                                              }}>
+                                              Delete
+                                            </Text>
+                                          </TouchableOpacity>
                                         </View>
-                                        <View style={{width: 8}} />
-                                        <Text>{`${v.firstName} ${v.lastName}`}</Text>
-                                      </TouchableOpacity>
-                                      <TouchableOpacity
-                                        onPress={() => dellData(v.id)}>
-                                        <Text
-                                          style={{
-                                            color: '#4169E1',
-                                          }}>
-                                          Delete
-                                        </Text>
-                                      </TouchableOpacity>
+                                      ) : null}
                                     </View>
-                                  ) : null}
-                                </View>
-                              );
-                            })}
-                      </View>
-                      <View style={{height: 1, backgroundColor: '#e6e6e6'}} />
-                    </View>
-                  );
-                })}
+                                  );
+                                })}
+                          </View>
+                          <View
+                            style={{height: 1, backgroundColor: '#e6e6e6'}}
+                          />
+                        </View>
+                      );
+                    })
+                  : Abjad.map((item, index) => {
+                      return (
+                        <View>
+                          <View
+                            key={index}
+                            style={{
+                              padding: 12,
+                            }}>
+                            <Text>{item}</Text>
+                            {dataSearch.length > 0
+                              ? dataSearch?.map((v, i) => {
+                                  return (
+                                    <View>
+                                      {item == FunMatchOne(v.firstName) ? (
+                                        <View
+                                          style={{
+                                            padding: 12,
+                                            flex: 1,
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                          }}>
+                                          <TouchableOpacity
+                                            onPress={() =>
+                                              props.navigation.navigate(
+                                                'DetailHome',
+                                              )
+                                            }
+                                            style={{
+                                              alignItems: 'center',
+                                              flexDirection: 'row',
+                                            }}>
+                                            <View
+                                              style={{
+                                                alignItems: 'center',
+                                                backgroundColor: '#e6e6e6',
+                                                borderRadius: 100,
+                                                width:
+                                                  widthPercentageToDP('8%'),
+                                                height:
+                                                  heightPercentageToDP('4%'),
+                                                justifyContent: 'center',
+                                              }}>
+                                              <Text
+                                                style={{
+                                                  fontSize: 12,
+                                                }}>
+                                                {`${FunMatchAll(
+                                                  `${v.firstName} ${v.lastName}`,
+                                                )}`}
+                                              </Text>
+                                            </View>
+                                            <View style={{width: 8}} />
+                                            <Text>{`${v.firstName} ${v.lastName}`}</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity
+                                            onPress={() => dellData(v.id)}>
+                                            <Text
+                                              style={{
+                                                color: '#4169E1',
+                                              }}>
+                                              Delete
+                                            </Text>
+                                          </TouchableOpacity>
+                                        </View>
+                                      ) : null}
+                                    </View>
+                                  );
+                                })
+                              : homeReducer.DataContact?.map((v, i) => {
+                                  return (
+                                    <View>
+                                      {item == FunMatchOne(v.firstName) ? (
+                                        <View
+                                          style={{
+                                            padding: 12,
+                                            flex: 1,
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                          }}>
+                                          <TouchableOpacity
+                                            onPress={() =>
+                                              props.navigation.navigate(
+                                                'DetailHome',
+                                              )
+                                            }
+                                            style={{
+                                              alignItems: 'center',
+                                              flexDirection: 'row',
+                                            }}>
+                                            <View
+                                              style={{
+                                                alignItems: 'center',
+                                                backgroundColor: '#e6e6e6',
+                                                borderRadius: 100,
+                                                width:
+                                                  widthPercentageToDP('8%'),
+                                                height:
+                                                  heightPercentageToDP('4%'),
+                                                justifyContent: 'center',
+                                              }}>
+                                              <Text
+                                                style={{
+                                                  fontSize: 12,
+                                                }}>
+                                                {`${FunMatchAll(
+                                                  `${v.firstName} ${v.lastName}`,
+                                                )}`}
+                                              </Text>
+                                            </View>
+                                            <View style={{width: 8}} />
+                                            <Text>{`${v.firstName} ${v.lastName}`}</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity
+                                            onPress={() => dellData(v.id)}>
+                                            <Text
+                                              style={{
+                                                color: '#4169E1',
+                                              }}>
+                                              Delete
+                                            </Text>
+                                          </TouchableOpacity>
+                                        </View>
+                                      ) : null}
+                                    </View>
+                                  );
+                                })}
+                          </View>
+                          <View
+                            style={{height: 1, backgroundColor: '#e6e6e6'}}
+                          />
+                        </View>
+                      );
+                    })}
               </View>
             </View>
           </ScrollView>
